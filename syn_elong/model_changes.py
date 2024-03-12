@@ -13,9 +13,9 @@ from memote.suite.cli.reports import diff
 import cobra
 import os
 import logging
-
+from cobra import Reaction, Metabolite
 from concerto.utils.biolog_help import add_biolog_exchanges, universal_model
-
+from syn_elong.updates_from_ims837 import update_5
 log = logging.getLogger()
 
 _file_path = os.path.dirname(__file__)
@@ -23,6 +23,7 @@ starting_model_f_name = 'iJB785.xml'
 s_model_path = os.path.join(_file_path, starting_model_f_name)
 
 starting_model = cobra.io.read_sbml_model(s_model_path)
+
 # starting_model = cobra.io.load_json_model('iJB792.json')
 starting_model.id = "syn_elong"
 
@@ -73,7 +74,10 @@ def update_3(model):
         reactions_to_add.add(reaction.copy())
     model.add_reactions(reactions_to_add)
     model.remove_reactions([universal_model.reactions.get_by_id('ORNTA')])
+
+
     return model
+
 
 
 def update_4(model):
@@ -91,13 +95,14 @@ def update_4(model):
     return model
 
 
+def update_model(model, update_func):
+    return update_func(model)
+
 def process_model_steps():
-    # Fix compartments
-    model = update_1(starting_model)
-    model = update_2(model)
-    model = update_3(model)
-    # don't add these reactions yet
-    # model = update_4(model)
+    model = starting_model
+    update_funcs = [update_1, update_2, update_3, update_5]
+    for update_func in update_funcs:
+        model = update_model(model, update_func)
     write_model(model)
 
 
