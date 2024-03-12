@@ -2,7 +2,7 @@ name: SYN memote tracking
 
 on:
   push:
-    branches: [ "main"]
+    branches: [ "main", "add_missing_rxns"]
 jobs:
   memote-history:
     runs-on: ubuntu-latest
