@@ -55,7 +55,16 @@ jobs:
         git checkout gh-pages
         # Generate the history report on the deployment branch
         memote report history --filename="${{ env.history }}"
-
+    - name: Auto-commit results
+      uses: stefanzweifel/git-auto-commit-action@v4.4.0
+      with:
+        commit_user_name: memote-bot
+        commit_message: "chore: update memote history report"
+        file_pattern: "*_report.html"
+        branch: gh-pages
+        repository: .
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Memote run
       run: |
         git checkout ${{ github.ref_name }}
