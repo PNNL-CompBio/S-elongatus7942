@@ -36,9 +36,6 @@ jobs:
         echo "custom_tests=syn_elong/custom_tests" >> $GITHUB_ENV
         echo "MEMOTE_LOCATION=results" >> $GITHUB_ENV
         echo "PYTHONPATH=$PYTHONPATH:concerto_path" >> $GITHUB_ENV
-        ls
-        pwd
-
 
     - name: Memote short run
       run: |
@@ -71,7 +68,9 @@ jobs:
         memote report snapshot \
         --filename="${{ env.snapshot }}" \
         --custom-tests=${{ env.custom_tests }}
-        git add "${{ env.snapshot }}"
+        git stash
+        git checkout -b gh-pages
+        git stash pop
 
     - name: Auto-commit results
       uses: stefanzweifel/git-auto-commit-action@v4.4.0
