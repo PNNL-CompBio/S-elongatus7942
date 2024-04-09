@@ -68,7 +68,7 @@ jobs:
         memote report snapshot \
         --filename="${{ env.snapshot }}" \
         --custom-tests=${{ env.custom_tests }}
-        git stash "${{ env.snapshot }}" 
+        git stash 
         git checkout gh-pages
         git stash pop
 
