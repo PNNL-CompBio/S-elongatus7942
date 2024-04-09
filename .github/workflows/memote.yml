@@ -68,9 +68,9 @@ jobs:
         memote report snapshot \
         --filename="${{ env.snapshot }}" \
         --custom-tests=${{ env.custom_tests }}
-        git stash 
+        mv ${{ env.snapshot }} tmp.html
         git checkout gh-pages
-        git stash pop
+        mv tmp.html ${{ env.snapshot }} 
 
     - name: Auto-commit results
       uses: stefanzweifel/git-auto-commit-action@v4.4.0
